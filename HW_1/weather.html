@@ -1,0 +1,39 @@
+<html lang="en">
+    <head>
+        <title>
+            Weather
+        </title>
+    </head>
+    <body>
+        <br><br>
+        <h3>
+            Choose your location:
+        </h3>
+        <br>
+        <form id="weather_form" action="/weather">
+            <select id="weather" name="location" form="weather_form">
+                <option value="college">Sirius College</option>
+                <option value="sochi">Sochi</option>
+                <option value="polyana">Krasnaya polyana</option>
+            </select>
+            <br><br>
+            <input type="submit">
+        </form>
+        <h2>
+            Weather
+        </h2>
+        <h3>
+            Location: {location}
+        </h3>
+        <h4>
+            Temperature: {temp}
+        </h4>
+        <h4>
+            Feels like: {feels_like}
+        </h4>
+        <h4>
+            Condition: {condition}
+        </h4>
+        <a href="/">Back to main</a>
+    </body>
+</html>

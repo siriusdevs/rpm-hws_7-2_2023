@@ -1,0 +1,51 @@
+<html lang="en">
+    <head>
+        <title>
+            Trees
+        </title>
+    </head>
+    <body>
+        <br>
+        <form action="/trees" name="trees_form" id="trees_form">
+            <label for="tree">Tree:</label><br>
+            <input type="text" id="tree" name="tree">
+            <br><br>
+            <label for="height">Height:</label><br>
+            <input type="text" id="height" name="height">
+            <br><br>
+            <label for="age">Age:</label><br>
+            <input type="text" id="age" name="age">
+            <br><br>
+            <label for="yield">Yield:</label><br>
+            <input type="text" id="yield" name="yield">
+            <br><br>
+            <input type="submit">
+        </form>
+        <script>
+            var form = document.getElementById("trees_form")
+            form.addEventListener('submit', function () {{
+                var all_inputs = form.getElementsByTagName('input');
+                for (var i=0; i<all_inputs.length; i++) {{
+                    var input = all_inputs[i];
+                    if (input.name && !input.value) {{
+                        input.name = '';
+                    }}
+                }}
+            }});
+        </script>
+        <h3>
+            Trees:
+        </h3>
+        <h4>
+            Trees count: {number}
+        </h4>
+        <h4> Full trees list: </h4>
+            {rendered_trees}
+        <br>
+        <a href="/weather">Weather</a>
+        <br>
+        <a href="/students">students</a>
+        <br>
+        <a href="/">Back to main</a>
+    </body>
+</html>
