@@ -1,20 +1,21 @@
+# pylint: skip-file
 HOST = '127.0.0.1'
 PORT = 8001
 
 # TEMPLATES
 MAIN_TEMPLATE = 'index.html'
 STUDENTS_TEMPLATE = 'students.html'
-WEATHER_TEMPLATE = 'weather.html'
 CHUCK_TEMPLATE = 'chuck.html'
 TREES_TEMPLATE = 'trees.html'
+PROFESSORS_TEMPLATE = 'professors.html'
 
 #PAGES
-WEATHER = '/weather'
 STUDENTS = '/students'
 TREES = '/trees'
+PROFESSORS = '/professors'
 CHUCK = '/chuck'
 MAIN = '/'
-PAGES = WEATHER, STUDENTS, TREES
+PAGES = MAIN, STUDENTS, TREES, PROFESSORS, CHUCK
 
 # db
 SELECT = 'SELECT * FROM {table}'
@@ -23,10 +24,10 @@ DELETE = 'DELETE FROM {table}'
 UPDATE = 'UPDATE {table} SET {data}'
 SELECT_ID = 'SELECT id FROM {table}' 
 GET_TOKEN = 'SELECT token FROM token WHERE username=\'{username}\''
-CHUCK_ALL_ATTRS = ['animal', 'career', 'celebrity', 'dev', 'explicit', 'fashion', 'food',
-                   'history', 'money', 'movie','music', 'political', 'science', 'sport', 'travel']
 STUDENTS_ALL_ATTRS = ['id', 'fname', 'lname', 'sname', 'group_', 'age']
 STUDENTS_REQ_ATTRS = ['fname', 'lname', 'group_']
+PROFESSORS_ALL_ATTRS = ['id', 'fname', 'patronymic', 'lname', 'subject', 'age']
+PROFESSORS_REQ_ATTRS = ['fname', 'patronymic']
 TREES_ALL_ATTRS = ['id', 'tree', 'height', 'age', 'yield']
 TREES_REQ_ATTRS = ['tree', 'yield']
 POST_RESPONSE_URL = f'http://{HOST}:{PORT}{STUDENTS}?id='
@@ -42,27 +43,14 @@ INTERNAL_ERROR = 500
 # CODING
 ENCODING = 'KOI8-R'
 
-# weather consts
-COLLEGE_LOCATION = {'lat': 43.403438, 'lon': 39.981544}
-SOCHI_LOCATION = {'lat': 43.713351, 'lon': 39.580041}
-POLYANA_LOCATION = {'lat': 43.661294, 'lon': 40.268936}
-LOCATIONS = {
-    'college': COLLEGE_LOCATION,
-    'sochi': SOCHI_LOCATION, 
-    'polyana': POLYANA_LOCATION
-}
-YAND_API_URL = 'https://api.weather.yandex.ru/v2/informers'
-
 # chuck norris' URL
 CHUCK_API_URL = 'https://api.chucknorris.io/jokes/random'
 
 # headers' names
-YAND_API_HEADER = 'X-Yandex-API-Key'
 HEADER_LENGTH = 'Content-Length'
 HEADER_TYPE = 'Content-Type'
 
 # debug messsages
-WEATHER_MSG = 'YANDEX API get_weather'
 CHUCK_MSG = 'CHUCK NORRIS API get_chucknorris'
 
 # consts

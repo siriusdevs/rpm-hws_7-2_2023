@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from config import *
 from psycopg2 import connect
-from views import weather, students, trees, chuck, main_page, list_to_paragraphs
+from views import professors, students, trees, chuck, main_page, list_to_paragraphs
 from requests import get
 
 load_dotenv()
@@ -40,6 +40,26 @@ def get_st_data(query: dict, table: str) -> dict:
         'number': len(studentss),
         'rendered_students': list_to_paragraphs(studentss),
     }
+    
+
+def get_prof_data(query: dict, table: str) -> dict:
+    """
+    Get professor data from DB.
+
+    Args:
+        query: dict - query_req
+        table: str - table_db
+
+    Returns:
+        dict - result of get_prof_data
+    """
+    global db_cursor
+    db_cursor.execute(query_request(SELECT.format(table=table), query))
+    professorss = db_cursor.fetchall()
+    return {
+        'number': len(professorss),
+        'rendered_professors': list_to_paragraphs(professorss),
+    }
 
 
 def get_tree_data(query: dict, table: str) -> dict:
@@ -54,9 +74,7 @@ def get_tree_data(query: dict, table: str) -> dict:
         dict - result of get_tree_data
     """
     global db_cursor
-    print('aboba')
     db_cursor.execute(query_request(SELECT.format(table=table), query))
-    print('aboba')
     treess = db_cursor.fetchall()
     return {
         'number': len(treess),
@@ -77,11 +95,11 @@ def query_request(request: str, query: dict) -> str:
     """
     if query:
         parts = []
-        for key, value in query.items():
-            if isinstance(value, int):
-                parts.append(f"{key}={value}")
+        for key, valuee in query.items():
+            if isinstance(valuee, int):
+                parts.append(f"{key}={valuee}")
             else:
-                parts.append(f"{key}='{value}'")
+                parts.append(f"{key}='{valuee}'")
         return '{0} WHERE {1}'.format(request, ' AND '.join(parts))
     return request
 
@@ -99,7 +117,18 @@ def get_chucknorris(query: dict) -> dict:
     chucknorris_data = {
         'value': None,
     }
-    if not query:
+    if query:
+        response = get(CHUCK_API_URL + 'category={0}'.format(query), timeout=TIMEOUT)
+        if response.status_code != OK:
+            print('Failed to get Chuck Norris joke')
+            return chucknorris_data
+        response_data = loads(response.content)
+        if not response_data or 'value' not in response_data:
+            print('Failed to get Chuck Norris joke data')
+            return chucknorris_data
+        chucknorris_data['value'] = response_data['value']
+        return chucknorris_data
+    else:
         response = get(CHUCK_API_URL, timeout=TIMEOUT)
         if response.status_code != OK:
             print('Failed to get Chuck Norris joke')
@@ -110,60 +139,6 @@ def get_chucknorris(query: dict) -> dict:
             return chucknorris_data
         chucknorris_data['value'] = response_data['value']
         return chucknorris_data
-    else:
-        response = get(CHUCK_API_URL + f'category={query}', timeout=TIMEOUT)
-        if response.status_code != OK:
-            print('Failed to get Chuck Norris joke')
-            return chucknorris_data
-        response_data = loads(response.content)
-        if not response_data or 'value' not in response_data:
-            print('Failed to get Chuck Norris joke data')
-            return chucknorris_data
-        chucknorris_data['value'] = response_data['value']
-        return chucknorris_data
-
-
-def get_weather(query: dict) -> dict:
-    """
-    Get weather data from API.
-
-    Args:
-        query: dict - query_req
-
-    Returns:
-        dict - result of get_weather
-    """
-    weather_data = {
-        'temp': None,
-        'feels_like': None,
-        'condition': None,
-        'location': 'Sirius College',
-    }
-
-    params = LOCATIONS['college']
-    if query:
-        location = query.get('location')
-        if location:
-            params = LOCATIONS[location]
-            weather_data['location'] = location
-    else:
-        print(f'{WEATHER_MSG} failed to get location from query, defaults to college')
-    response = get(YAND_API_URL, params=params, headers={YAND_API_HEADER: YAND_KEY}, timeout=TIMEOUT)  # type:ignore
-    if response.status_code != OK:
-        print(f'{WEATHER_MSG} failed with status code: {response.status_code}')
-        return weather_data
-    response_data = response.json()
-    if not response_data:
-        print(f'{WEATHER_MSG} api did respond with empty content')
-        return weather_data
-    fact = response_data.get('fact')
-    if not fact:
-        print(f'{WEATHER_MSG} api did not provide factual weather data')
-        return weather_data
-    for key in weather_data.keys():
-        if key != 'location':
-            weather_data[key] = fact.get(key)
-    return weather_data
 
 
 def change_db(request: str) -> bool:
@@ -291,7 +266,7 @@ def is_valid_token(username: str, token: str) -> bool:
 class CustomHandler(BaseHTTPRequestHandler):
     """This is representation of not existing smth."""
 
-    def get_query(self, possible_attrs: dict = {}) -> tuple:
+    def get_query(self, possible_attrs: dict) -> tuple:
         """
         Get query request.
 
@@ -315,7 +290,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 for attr in resultt.keys():
                     if attr not in possible_attrs:
                         raise Exception(f'unknown attribute <{attr}>')
-        return result  # type: ignore
+        return resultt  # type: ignore
 
     def get_template(self) -> str:
         """
@@ -334,16 +309,17 @@ class CustomHandler(BaseHTTPRequestHandler):
                 return BAD_REQUEST, str(error)  # type: ignore
             else:
                 return OK, students(get_st_data(query, STUDENTS[1:]))  # type: ignore
-        elif self.path.startswith(WEATHER):
+        elif self.path.startswith(PROFESSORS):
             try:
-                query = self.get_query()
+                query = self.get_query(PROFESSORS_ALL_ATTRS)  # type: ignore
+                print(query)
             except Exception as error:
                 return BAD_REQUEST, str(error)  # type: ignore
             else:
-                return OK, weather(get_weather(query))  # type: ignore
+                return OK, professors(get_prof_data(query, PROFESSORS[1:]))  # type: ignore
         elif self.path.startswith(CHUCK):
             try:
-                query = self.get_query(CHUCK_ALL_ATTRS)  # type: ignore
+                query = self.get_query({})
             except Exception as error:
                 return BAD_REQUEST, str(error)  # type: ignore
             else:
@@ -369,7 +345,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         code, page = self.get_template()
         self.respond(code, page)  # type: ignore
 
-    def get_body(self, required_attrs: dict = {}) -> tuple:
+    def get_body(self, required_attrs: dict) -> tuple:
         """
         Get body for server.
 
@@ -424,7 +400,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                         msg = 'FAIL'
             elif self.command == 'PUT':
                 try:
-                    body = self.get_body()
+                    body = self.get_body({})
                     query = self.get_body(STUDENTS_ALL_ATTRS)  # type: ignore
                 except Exception as error:
                     code = BAD_REQUEST
@@ -441,6 +417,44 @@ class CustomHandler(BaseHTTPRequestHandler):
                 else:
                     code = OK
                     msg = 'OK' if db_delete(STUDENTS[1:], query) else 'FAIL'  # type: ignore
+        elif self.path.startswith(PROFESSORS):
+            if self.command == 'POST':
+                try:
+                    body = self.get_body(PROFESSORS_REQ_ATTRS)  # type: ignore
+                except Exception as error:
+                    code = BAD_REQUEST
+                    msg = str(error)
+                else:
+                    if db_insert(PROFESSORS[1:], body):  # type: ignore
+                        idd = get_id(PROFESSORS[1:], body)  # type: ignore
+                        if idd:
+                            msg = f'{POST_RESPONSE_URL}{idd}'
+                            code = OK
+                        else:
+                            code = INTERNAL_ERROR
+                            msg = 'id not found after POST'
+                    else:
+                        code = BAD_REQUEST
+                        msg = 'FAIL'
+            elif self.command == 'PUT':
+                try:
+                    body = self.get_body({})
+                    query = self.get_body(PROFESSORS_ALL_ATTRS)  # type: ignore
+                except Exception as error:
+                    code = BAD_REQUEST
+                    msg = str(error)
+                else:
+                    code = OK
+                msg = 'OK' if db_update(PROFESSORS[1:], query, body) else 'FAIL'  # type: ignore
+            elif self.command == 'DELETE':
+                try:
+                    query = self.get_query(PROFESSORS_ALL_ATTRS)  # type: ignore
+                except Exception as error:
+                    code = BAD_REQUEST
+                    msg = str(error)
+                else:
+                    code = OK
+                    msg = 'OK' if db_delete(PROFESSORS[1:], query) else 'FAIL'  # type: ignore
         elif self.path.startswith(TREES):
             if self.command == 'POST':
                 try:

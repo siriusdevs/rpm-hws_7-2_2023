@@ -16,20 +16,6 @@ def list_to_paragraphs(data: list):
     """
     return ''.join([f'<ul>{value}</ul>' for value in data]) if data else '<p>No data given.</p>'
 
-
-def weather(weatherr: dict) -> str:
-    """
-    Open weather template.
-
-    Args:
-        weatherr: dict - weather
-
-    Returns:
-        str - result of weather
-    """
-    with open(WEATHER_TEMPLATE, 'r') as file:
-        return file.read().format(**weatherr)
-    
     
 def chuck(joke: dict) -> str:
     """
@@ -47,7 +33,7 @@ def chuck(joke: dict) -> str:
     
 def students(students_data: dict) -> str:
     """
-    Open students template.
+    Read students template.
 
     Args:
         students_data: dict - students data
@@ -57,6 +43,20 @@ def students(students_data: dict) -> str:
     """
     with open(STUDENTS_TEMPLATE, 'r') as file:
         return file.read().format(**students_data)
+
+
+def professors(professors_data: dict) -> str:
+    """
+    Read professors template.
+
+    Args:
+        professors_data: dict - professors data
+
+    Returns:
+        str - result of professors
+    """
+    with open(PROFESSORS_TEMPLATE, 'r') as file:
+        return file.read().format(**professors_data)
 
 
 def trees(trees_data: dict) -> str:

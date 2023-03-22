@@ -1,28 +1,31 @@
 <html lang="en">
     <head>
         <title>
-            Trees
+            Professors
         </title>
     </head>
     <body>
         <br>
-        <form action="/trees" name="trees_form" id="trees_form">
-            <label for="tree">Tree:</label><br>
-            <input type="text" id="tree" name="tree">
+        <form action="/professors" name="professors_form" id="professors_form">
+            <label for="subject">Subject:</label><br>
+            <input type="text" id="subject" name="subject">
             <br><br>
-            <label for="height">Height:</label><br>
-            <input type="text" id="height" name="height">
+            <label for="fname">First name:</label><br>
+            <input type="text" id="fname" name="fname">
+            <br><br>
+            <label for="patronymic">Patronymic:</label><br>
+            <input type="text" id="patronymic" name="patronymic">
+            <br><br>
+            <label for="lname">Last name:</label><br>
+            <input type="text" id="lname" name="lname">
             <br><br>
             <label for="age">Age:</label><br>
             <input type="text" id="age" name="age">
             <br><br>
-            <label for="yield">Yield:</label><br>
-            <input type="text" id="yield" name="yield">
-            <br><br>
             <input type="submit">
         </form>
         <script>
-            var form = document.getElementById("trees_form")
+            var form = document.getElementById("professors_form")
             form.addEventListener('submit', function () {{
                 var all_inputs = form.getElementsByTagName('input');
                 for (var i=0; i<all_inputs.length; i++) {{
@@ -34,15 +37,15 @@
             }});
         </script>
         <h3>
-            Trees:
+            Professors:
         </h3>
         <h4>
-            Trees count: {number}
+            Professors count: {number}
         </h4>
-        <h4> Full trees list: </h4>
-            {rendered_trees}
+        <h4> Full professors list: </h4>
+            {rendered_professors}
         <br>
-        <a href="/professors">Professors</a>
+        <a href="/trees">Trees</a>
         <br>
         <a href="/students">Students</a>
         <br>
