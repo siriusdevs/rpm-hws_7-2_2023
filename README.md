@@ -9,7 +9,7 @@ docker run  -d \
         -e PGDATA=/postgres_data_inside_container \
         -v ~/sirius_db_2023/postgres_data:/postgres_data_inside_container \
         -p 38746:5432 \
-        postgres:15.1
+        postgres:15.1 \
 
 docker start postgres_db2023
 
