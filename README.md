@@ -13,7 +13,7 @@ docker run  -d \
 
 docker start postgres_db2023
 
-psql -h 127.0.0.1 -p 38746 -U sirius_2023 -f  init_db.ddl
+psql -h 127.0.0.1 -p 38746 -U sirius_2023 -f init_db.ddl
 
 # .env:
 database name, host, port, passsword and user to connect 
