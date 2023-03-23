@@ -38,19 +38,24 @@ def game(questions):
     Returns:
         False: in case of Error
     """
-    points = 0
-    for question in questions:
+    points, i = 0, 0
+    while i < len(questions):
+        question = questions[i]
         print('{0}\n1) {1}\n2) {2}\n3) {3}'.format(*question[1:5]))
+        user_inp = input('Type your answer (1-3), to exit - q: ')
+        if user_inp in ['q', 'Q', 'quit', 'Quit', 'QUIT']:
+            break
         try:
-            user_answer = int(input('Type your answer (1-3): '))
+            user_answer = int(user_inp)
         except Exception:
             print('You need to write only numbers. Try again')
-            return game(questions)
+            continue
         if user_answer == question[5]:
             points += 1
             print('The answer is correct!', '\n')
         else:
             print('Incorrect answer! The correct answer is:', str(question[5]), '\n')
+        i += 1
 
     msg = 'Your result is: {0}. '.format(points)
     msg += 'You win!' if points > 1 else 'You lose..'
