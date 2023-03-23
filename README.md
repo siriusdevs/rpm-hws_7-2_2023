@@ -13,15 +13,16 @@
 
 docker start postgres_db2023
 
-psql -h 127.0.0.1 -p 38746 -U sirius_2023 -f init_db.ddl
+psql -h 127.0.0.1 -p 38746 -U sirius_2023 -d postgres -f init_db.ddl
 
 # .env:
 database name, host, port, passsword and user to connect 
-- PG_HOST: postgresql host
-- PG_PORT: postgresql port
-- PG_USER: postgresql username
-- PG_PASSWORD: postgresql password
-- PG_DBNAME: postgresql dbname
+
+`PG_HOST=127.0.0.1
+PG_PORT=38746
+PG_USER=sirius_2023
+PG_PASSWORD=change_me
+PG_DBNAME=postgres`
 
 # run:
     python3 main.py 
