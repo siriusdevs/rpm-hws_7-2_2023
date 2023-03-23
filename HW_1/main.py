@@ -463,7 +463,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 msg = 'Not implemented by server, available requests are GET, PUT, DELETE'
             return code, f'{self.command} {msg}'
 
-        return NOT_FOUND, 'Content was NOT FOUND'
+        return code, msg
 
     def respond(self, code: int, msg: str):
         """
