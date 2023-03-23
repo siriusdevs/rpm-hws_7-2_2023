@@ -9,19 +9,21 @@
     cd quizgame
 
 # Next step is creating Docker container and filling database
-    run init_script.sh
+    chmod +x init_script.sh
+
+    ./init_script.sh
 
 ### Then, you shoul fill the .env file
 # .env
-    HOST - database host
+    HOST - 127.0.0.1
 
-    DATABASE - database name
+    DATABASE - quizDB
 
-    DB_USER - database user
+    DB_USER - app
 
-    PASSWORD - database password
+    PASSWORD - 123
     
-    PORT - database port
+    PORT - 5430
 
 ### Now move to project directory
 ### Run server with command:

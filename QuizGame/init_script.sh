@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PGPASSWORD=123
+
 
 docker run -d \
 --name quiz_DB \
