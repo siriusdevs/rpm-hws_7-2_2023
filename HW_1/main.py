@@ -115,28 +115,16 @@ def get_chucknorris(query: dict) -> dict:
     chucknorris_data = {
         'value': None,
     }
-    if query:
-        response = get(CHUCK_API_URL + 'category={0}'.format(query), timeout=TIMEOUT)
-        if response.status_code != OK:
-            print('Failed to get Chuck Norris joke')
-            return chucknorris_data
-        response_data = loads(response.content)
-        if not response_data or 'value' not in response_data:
-            print('Failed to get Chuck Norris joke data')
-            return chucknorris_data
-        chucknorris_data['value'] = response_data['value']
+    response = get(CHUCK_API_URL, timeout=TIMEOUT)
+    if response.status_code != OK:
+        print('Failed to get Chuck Norris joke')
         return chucknorris_data
-    else:
-        response = get(CHUCK_API_URL, timeout=TIMEOUT)
-        if response.status_code != OK:
-            print('Failed to get Chuck Norris joke')
-            return chucknorris_data
-        response_data = loads(response.content)
-        if not response_data or 'value' not in response_data:
-            print('Failed to get Chuck Norris joke data')
-            return chucknorris_data
-        chucknorris_data['value'] = response_data['value']
+    response_data = loads(response.content)
+    if not response_data or 'value' not in response_data:
+        print('Failed to get Chuck Norris joke data')
         return chucknorris_data
+    chucknorris_data['value'] = response_data['value']
+    return chucknorris_data
 
 
 def change_db(request: str) -> bool:
@@ -302,7 +290,6 @@ class CustomHandler(BaseHTTPRequestHandler):
         if self.path.startswith(STUDENTS):
             try:
                 query = self.get_query(STUDENTS_ALL_ATTRS)  # type: ignore
-                print(query)
             except Exception as error:
                 return BAD_REQUEST, str(error)  # type: ignore
             else:
@@ -310,7 +297,6 @@ class CustomHandler(BaseHTTPRequestHandler):
         elif self.path.startswith(PROFESSORS):
             try:
                 query = self.get_query(PROFESSORS_ALL_ATTRS)  # type: ignore
-                print(query)
             except Exception as error:
                 return BAD_REQUEST, str(error)  # type: ignore
             else:
