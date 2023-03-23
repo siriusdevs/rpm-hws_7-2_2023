@@ -4,10 +4,9 @@
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from os import getenv
 from json import loads
-
 from dotenv import load_dotenv
-
 from config import *
+
 from psycopg2 import connect
 from views import professors, students, trees, chuck, main_page, list_to_paragraphs
 from requests import get
