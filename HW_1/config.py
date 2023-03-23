@@ -29,11 +29,15 @@ STUDENTS_REQ_ATTRS = ['fname', 'lname', 'group_']
 PROFESSORS_ALL_ATTRS = ['id', 'fname', 'patronymic', 'lname', 'subject', 'age']
 PROFESSORS_REQ_ATTRS = ['fname', 'patronymic']
 TREES_ALL_ATTRS = ['id', 'tree', 'height', 'age', 'yield']
-TREES_REQ_ATTRS = ['tree', 'yield']
-POST_RESPONSE_URL = f'http://{HOST}:{PORT}{STUDENTS}?id='
+TREES_REQ_ATTRS = ['tree', 'age']
+POST_STUD_RESP_URL = f'http://{HOST}:{PORT}{STUDENTS}?id='
+POST_PROF_RESP_URL = f'http://{HOST}:{PORT}{PROFESSORS}?id='
+POST_TREE_RESP_URL = f'http://{HOST}:{PORT}{TREES}?id='
+
 
 # HTTP codes
 OK = 200
+CREATED = 201
 NOT_FOUND = 404
 FORBIDDEN = 403
 BAD_REQUEST = 400

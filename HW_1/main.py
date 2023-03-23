@@ -374,7 +374,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                     if db_insert(STUDENTS[1:], body):  # type: ignore
                         idd = get_id(STUDENTS[1:], body)  # type: ignore
                         if idd:
-                            msg = f'{POST_RESPONSE_URL}{idd}'
+                            msg = f'{POST_STUD_RESP_URL}{idd}'
                             code = OK
                         else:
                             code = INTERNAL_ERROR
@@ -412,7 +412,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                     if db_insert(PROFESSORS[1:], body):  # type: ignore
                         idd = get_id(PROFESSORS[1:], body)  # type: ignore
                         if idd:
-                            msg = f'{POST_RESPONSE_URL}{idd}'
+                            msg = f'{POST_PROF_RESP_URL}{idd}'
                             code = OK
                         else:
                             code = INTERNAL_ERROR
@@ -447,8 +447,27 @@ class CustomHandler(BaseHTTPRequestHandler):
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
+                    if db_insert(TREES[1:], body):  # type: ignore
+                        idd = get_id(TREES[1:], body)  # type: ignore
+                        if idd:
+                            msg = f'{POST_TREE_RESP_URL}{idd}'
+                            code = CREATED
+                        else:
+                            code = INTERNAL_ERROR
+                            msg = 'id not found after POST'
+                    else:
+                        code = BAD_REQUEST
+                        msg = 'FAIL'
+            elif self.command == 'PUT':
+                try:
+                    body = self.get_body({})
+                    query = self.get_body(TREES_ALL_ATTRS)  # type: ignore
+                except Exception as error:
+                    code = BAD_REQUEST
+                    msg = str(error)
+                else:
                     code = OK
-                    msg = 'OK' if db_insert(TREES[1:], body) else 'FAIL'  # type: ignore
+                msg = 'OK' if db_update(TREES[1:], query, body) else 'FAIL'  # type: ignore
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(TREES_ALL_ATTRS)  # type: ignore
@@ -458,10 +477,6 @@ class CustomHandler(BaseHTTPRequestHandler):
                 else:
                     code = OK
                     msg = 'OK' if db_delete(TREES[1:], query) else 'FAIL'  # type: ignore
-            else:
-                code = NOT_IMPLEMENTED
-                msg = 'Not implemented by server, available requests are GET, PUT, DELETE'
-            return code, f'{self.command} {msg}'
 
         return code, msg
 
