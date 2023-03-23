@@ -1,7 +1,7 @@
 # __First step__
 #### run the command
 ```
-git clone https://github.com/arinapruzhinina/rpm-hws_7-2_2023/tree/main
+git clone https://github.com/arinapruzhinina/rpm-hws_7-2_2023
 
 cd rpm-hws_7-2_2023
 
