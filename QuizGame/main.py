@@ -34,6 +34,9 @@ def game(questions):
 
     Args:
         questions (tuple): all the information from the table
+
+    Returns:
+        False: in case of Error
     """
     points = 0
     for question in questions:
@@ -41,7 +44,11 @@ def game(questions):
         print('1) {0}'.format(question[2]))
         print('2) {0}'.format(question[3]))
         print('3) {0}'.format(question[4]), '\n')
-        user_answer = int(input('Type your answer (1-3): '))
+        try:
+            user_answer = int(input('Type your answer (1-3): '))
+        except Exception:
+            print('You need to write only numbers. Game over.')
+            return False
         if user_answer == question[5]:
             points += 1
             print('The answer is correct!', '\n')
