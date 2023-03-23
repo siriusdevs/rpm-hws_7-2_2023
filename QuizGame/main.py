@@ -40,25 +40,21 @@ def game(questions):
     """
     points = 0
     for question in questions:
-        print(question[1])
-        print('1) {0}'.format(question[2]))
-        print('2) {0}'.format(question[3]))
-        print('3) {0}'.format(question[4]), '\n')
+        print('{0}\n1) {1}\n2) {2}\n3) {3}'.format(*question[1:5]))
         try:
             user_answer = int(input('Type your answer (1-3): '))
         except Exception:
-            print('You need to write only numbers. Game over.')
-            return False
+            print('You need to write only numbers. Try again')
+            return game(questions)
         if user_answer == question[5]:
             points += 1
             print('The answer is correct!', '\n')
         else:
             print('Incorrect answer! The correct answer is:', str(question[5]), '\n')
 
-    if points > 1:
-        print('Your result is: {0}. You win!'.format(points))
-    else:
-        print('Your result is: {0}. You lose..'.format(points))
+    msg = 'Your result is: {0}. '.format(points)
+    msg += 'You win!' if points > 1 else 'You lose..'
+    print(msg)
 
 
 if __name__ == '__main__':
