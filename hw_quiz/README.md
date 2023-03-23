@@ -1,30 +1,32 @@
-#__First step__
-####run the command
+# __First step__
+#### run the command
 ```
 git clone https://github.com/arinapruzhinina/rpm-hws_7-2_2023/tree/main
+
+cd rpm-hws_7-2_2023
 
 git checkout pruzhinina
 ```
 
-#__Second step__
+# __Second step__
 
-####Move to folder hw_quiz:
+#### move to folder hw_quiz:
 ```
 cd hw_quiz
 ```
 
 
-####Create a docker container
-######Change the access rights to the script:
+#### Create a docker container
+###### change the access rights to the script:
 ```
 chmod +x script.sh
 ```
-######Run the file to fill the database:
+###### run the file to fill the database:
 ```
-./sript.sh
+./script.sh
 ```
-#__Third step__
-####Create .env file according to the example
+# __Third step__
+#### create .env file according to the example
 
 ```
 PG_HOST=127.0.0.1
@@ -32,4 +34,11 @@ PG_PORT=5436
 PG_USER=app
 PG_PASSWORD=123
 PG_DBNAME=quiz_db
+```
+# __Fourth step__
+
+#### run main.py
+
+```
+python3 main.py
 ```
