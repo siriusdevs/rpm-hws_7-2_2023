@@ -19,30 +19,32 @@ data = cursor.fetchall()
 print('Викторина на тему: Россия')
 rans = 0
 for row in data:
-    id = row['id']
-    question = row['question']
-    answer_1 = row['answer_1']
-    answer_2 = row['answer_2']
-    answer_3 = row['answer_3']
-    right_answer = int(row['right_answer'])
-    print('\n'.join((f'Вопрос № {id}',
-        f'{question}',
-        'Варианты ответа: ',
-        f'{answer_1}',
-        f'{answer_2}',
-        f'{answer_3}',
-        'Ваш ответ: \n')))
-    try:
-        otvet = int(input())
-    except ValueError:
-        print('Вводите число!')
-        continue
+    while True:
+        id = row['id']
+        question = row['question']
+        answer_1 = row['answer_1']
+        answer_2 = row['answer_2']
+        answer_3 = row['answer_3']
+        right_answer = int(row['right_answer'])
+        print('\n'.join((f'Вопрос № {id}',
+            f'{question}',
+            'Варианты ответа: ',
+            f'{answer_1}',
+            f'{answer_2}',
+            f'{answer_3}',
+            'Ваш ответ: \n')))
+        try:
+            otvet = int(input())
+        except ValueError:
+            print('Вводите число!')
+            continue
+        break
     if otvet == int(right_answer):
         print('Правильно!\n')
         rans += 1
     else:
         print(f'Неверно! Правильный ответ: {right_answer}\n')
-print(f'Ваш результат: {rans} из 10')
+print(f'Ваш результат: {rans} из {len(data)}')
 
 cursor.close()
 connection.close()
