@@ -449,6 +449,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 else:
                     if db_insert(TREES[1:], body):  # type: ignore
                         idd = get_id(TREES[1:], body)  # type: ignore
+                        print(idd) 
                         if idd:
                             msg = f'{POST_TREE_RESP_URL}{idd}'
                             code = CREATED
@@ -477,6 +478,9 @@ class CustomHandler(BaseHTTPRequestHandler):
                 else:
                     code = OK
                     msg = 'OK' if db_delete(TREES[1:], query) else 'FAIL'  # type: ignore
+        else:
+            code = BAD_REQUEST
+            msg = "Uknown attribute requested"
 
         return code, msg
 

@@ -22,7 +22,7 @@ SELECT = 'SELECT * FROM {table}'
 INSERT = 'INSERT INTO {table} ({attrs}) VALUES ({values})'
 DELETE = 'DELETE FROM {table}'
 UPDATE = 'UPDATE {table} SET {data}'
-SELECT_ID = 'SELECT id FROM {table}' 
+SELECT_ID = 'SELECT MAX(id) FROM {table}'
 GET_TOKEN = 'SELECT token FROM token WHERE username=\'{username}\''
 STUDENTS_ALL_ATTRS = ['id', 'fname', 'lname', 'sname', 'group_', 'age']
 STUDENTS_REQ_ATTRS = ['fname', 'lname', 'group_']
