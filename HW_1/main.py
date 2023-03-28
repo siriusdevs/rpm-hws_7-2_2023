@@ -449,7 +449,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 else:
                     if db_insert(TREES[1:], body):  # type: ignore
                         idd = get_id(TREES[1:], body)  # type: ignore
-                        print(idd) 
+                        print(idd)
                         if idd:
                             msg = f'{POST_TREE_RESP_URL}{idd}'
                             code = CREATED
