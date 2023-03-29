@@ -63,22 +63,30 @@ def check_answer(question, answer):
 def main():
     """Get answer to question."""
     questions = get_questions()
-    for question in questions:
-        view_question(question)
+    elements = 0
+    while elements < len(questions):
+        view_question(questions[elements])
         answer = input('Введите вариант ответа (1-4): ')
 
         try:
             try_answer = int(answer)
+
         except Exception:
             print('Некорректный ввод. Вводите цифру от 1 до 4')
+            play_again = input('Хотите сыграть еще раз? (да/нет)')
             continue
-        if check_answer(question, try_answer):
-            print('Угадали!')
-        else:
-            print('Неправильно! Надо было {0}'.format(str(question[6])))
 
+        if 0 < try_answer <= 4:
+            if check_answer(questions[elements], try_answer):
+                print('Угадали!')
+                elements += 1
+            else:
+                print('Неправильно! Попробуйте еще раз!')
+        else:
+            print('Нужно вводить цифры от 1 до 4!')
         play_again = input('Хотите сыграть еще раз? (да/нет)')
-        if play_again.lower() != 'да':
+
+        if play_again.lower() not in ['да', 'д', 'yes', 'y', 'lf']:
             break
 
     conn.close()
