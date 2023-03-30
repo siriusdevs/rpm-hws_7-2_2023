@@ -46,5 +46,5 @@ PG_DBNAME=quiz_db
 #### run main.py
 
 ```
-python3 main.py start
+python3 main.py
 ```
