@@ -1,0 +1,29 @@
+docker run -d --name animals_db -p :32771 -e POSTGRES_USER=lina -e POSTGRES_PASSWORD=cat -e POSTGRES_DB=animals postgres
+
+psql -h 127.0.0.1 -p 32771 -U lina -d animals_db
+
+CREATE = 'CREATE TABLE {table}'
+SELECT = 'SELECT * FROM {table}'
+INSERT = 'INSERT INTO {table} ({attrs}) VALUES ({values})'
+DELETE = 'DELETE FROM {table}'
+UPDATE = 'UPDATE {table} SET {data}'
+SELECT_ID = 'SELECT id FROM {table}'
+GET_TOKEN = 'SELECT token FROM token WHERE username=\'{username}\''
+ANIMALS_ALL_ATTRS = ['id', 'kind', 'areal', 'fact']
+ANIMALS_REQ_ATTRS = ['kind', 'areal', 'fact']
+POST_RESPONSE_URL = f'http://{HOST}:{PORT}{ANIMALS}?id='
+
+CREATE TABLE animals (id int generated always as identity primary key, kind TEXT, areal TEXT, fact TEXT);
+
+insert INTO animals (kind, areal, fact) values ('Elephant', 'Southeast Asia and Africa', 'largest land animals on the Earth');
+insert INTO animals (kind, areal, fact) values ('Ay-ay', 'Madagascar', 'a woodpecker''s way of looking for food');
+insert INTO animals (kind, areal, fact) values ('Water deer', 'East-central China and Korea', 'the name water deer came from the animal''s ability to swim');
+insert INTO animals (kind, areal, fact) values ('Narwhal', 'Antarctica', 'inside the horn are nerve endings that help determine water temperature');
+insert INTO animals (kind, areal, fact) values ('Living stone', 'Japan', 'outwardly similar to pineapple, eggplant or even glass lamps');
+insert INTO animals (kind, areal, fact) values ('Guara', 'Southeast America', 'the eyes of these animals are considered a symbol of good luck by the natives of South America');
+
+CREATE EXTENSION "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS token (username TEXT PRIMARY KEY, token uuid);
+
+INSERT INTO token VALUES ('admin', uuid_generate_v4());
