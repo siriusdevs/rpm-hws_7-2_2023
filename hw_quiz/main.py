@@ -48,6 +48,16 @@ def view_question(question):
     print('4. {0}'.format(question[5]))
 
 
+def get_users_answer():
+    """Get answer from user.
+
+    Returns: bool
+    """
+    play_again = input('Хотите сыграть еще раз? (да/нет)')
+
+    return play_again.lower() not in ['да', 'д', 'yes', 'y', 'lf', 'дп', 'da', 'd']
+
+
 def check_answer(question, answer):
     """Check correct answer.
 
@@ -64,6 +74,7 @@ def main():
     """Get answer to question."""
     questions = get_questions()
     elements = 0
+    points = 0
     while elements < len(questions):
         view_question(questions[elements])
         answer = input('Введите вариант ответа (1-4): ')
@@ -73,9 +84,7 @@ def main():
 
         except Exception:
             print('Некорректный ввод. Вводите цифру от 1 до 4')
-            play_again = input('Хотите сыграть еще раз? (да/нет)')
-
-            if play_again.lower() not in ['да', 'д', 'yes', 'y', 'lf', 'дп', 'da', 'd']:
+            if get_users_answer():
                 break
             continue
 
@@ -83,15 +92,16 @@ def main():
             if check_answer(questions[elements], try_answer):
                 print('Угадали!')
                 elements += 1
+                points += 1
             else:
-                print('Неправильно! Попробуйте еще раз!')
+                print('Неправильный ответ!')
                 elements += 1
         else:
             print('Нужно вводить цифры от 1 до 4!')
-        play_again = input('Хотите сыграть еще раз? (да/нет)')
-
-        if play_again.lower() not in ['да', 'д', 'yes', 'y', 'lf']:
+        if get_users_answer():
             break
+        if elements == 5:
+            print('Викторина закончилась, вы набрали {0}/{1} баллов!'.format(points, len(questions)))
     conn.close()
 
 
