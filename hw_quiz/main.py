@@ -74,6 +74,9 @@ def main():
         except Exception:
             print('Некорректный ввод. Вводите цифру от 1 до 4')
             play_again = input('Хотите сыграть еще раз? (да/нет)')
+
+            if play_again.lower() not in ['да', 'д', 'yes', 'y', 'lf', 'дп', 'da', 'd']:
+                break
             continue
 
         if 0 < try_answer <= 4:
@@ -82,13 +85,13 @@ def main():
                 elements += 1
             else:
                 print('Неправильно! Попробуйте еще раз!')
+                elements += 1
         else:
             print('Нужно вводить цифры от 1 до 4!')
         play_again = input('Хотите сыграть еще раз? (да/нет)')
 
         if play_again.lower() not in ['да', 'д', 'yes', 'y', 'lf']:
             break
-
     conn.close()
 
 
