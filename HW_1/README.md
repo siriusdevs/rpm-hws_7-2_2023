@@ -10,7 +10,7 @@
 
 ###### psql -h 127.0.0.1 -p 38748 -U hw
 
-###### psql -h 127.0.0.1 -p 38748 -U hw -d -f init_db.ddl
+###### psql -h 127.0.0.1 -p 38748 -U hw -d postgres -f init_db.ddl
 
 ## postgres databases
 ###### with tables: 
