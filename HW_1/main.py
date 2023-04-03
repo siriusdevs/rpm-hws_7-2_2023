@@ -276,7 +276,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                 for attr in resultt.keys():
                     if attr not in possible_attrs:
                         raise Exception(f'unknown attribute <{attr}>')
-        return resultt  # type: ignore
+        return resultt
 
     def get_template(self) -> str:
         """
@@ -289,33 +289,33 @@ class CustomHandler(BaseHTTPRequestHandler):
         """
         if self.path.startswith(STUDENTS):
             try:
-                query = self.get_query(STUDENTS_ALL_ATTRS)  # type: ignore
+                query = self.get_query(STUDENTS_ALL_ATTRS)
             except Exception as error:
-                return BAD_REQUEST, str(error)  # type: ignore
+                return BAD_REQUEST, str(error)
             else:
-                return OK, students(get_st_data(query, STUDENTS[1:]))  # type: ignore
+                return OK, students(get_st_data(query, STUDENTS[1:]))
         elif self.path.startswith(PROFESSORS):
             try:
-                query = self.get_query(PROFESSORS_ALL_ATTRS)  # type: ignore
+                query = self.get_query(PROFESSORS_ALL_ATTRS)
             except Exception as error:
-                return BAD_REQUEST, str(error)  # type: ignore
+                return BAD_REQUEST, str(error)
             else:
-                return OK, professors(get_prof_data(query, PROFESSORS[1:]))  # type: ignore
+                return OK, professors(get_prof_data(query, PROFESSORS[1:]))
         elif self.path.startswith(CHUCK):
             try:
                 query = self.get_query({})
             except Exception as error:
-                return BAD_REQUEST, str(error)  # type: ignore
+                return BAD_REQUEST, str(error)
             else:
-                return OK, chuck(get_chucknorris(query))  # type: ignore
+                return OK, chuck(get_chucknorris(query))
         elif self.path.startswith(TREES):
             try:
-                query = self.get_query(TREES_ALL_ATTRS)  # type: ignore
+                query = self.get_query(TREES_ALL_ATTRS)
             except Exception as error:
-                return BAD_REQUEST, str(error)  # type: ignore
+                return BAD_REQUEST, str(error)
             else:
-                return OK, trees(get_tree_data(query, TREES[1:]))  # type: ignore
-        return OK, main_page()  # type: ignore
+                return OK, trees(get_tree_data(query, TREES[1:]))
+        return OK, main_page()
 
     def do_GET(self) -> None:
         """
@@ -327,7 +327,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         None - respond
         """
         code, page = self.get_template()
-        self.respond(code, page)  # type: ignore
+        self.respond(code, page)
 
     def get_body(self, required_attrs: dict) -> tuple:
         """
@@ -366,13 +366,13 @@ class CustomHandler(BaseHTTPRequestHandler):
         if self.path.startswith(STUDENTS):
             if self.command == 'POST':
                 try:
-                    body = self.get_body(STUDENTS_REQ_ATTRS)  # type: ignore
+                    body = self.get_body(STUDENTS_REQ_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    if db_insert(STUDENTS[1:], body):  # type: ignore
-                        idd = get_id(STUDENTS[1:], body)  # type: ignore
+                    if db_insert(STUDENTS[1:], body):
+                        idd = get_id(STUDENTS[1:], body)
                         if idd:
                             msg = f'{POST_STUD_RESP_URL}{idd}'
                             code = OK
@@ -385,32 +385,36 @@ class CustomHandler(BaseHTTPRequestHandler):
             elif self.command == 'PUT':
                 try:
                     body = self.get_body({})
-                    query = self.get_body(STUDENTS_ALL_ATTRS)  # type: ignore
+                    query = self.get_body(STUDENTS_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
                     code = OK
-                msg = 'OK' if db_update(STUDENTS[1:], query, body) else 'FAIL'  # type: ignore
+                msg = 'OK' if db_update(STUDENTS[1:], query, body) else 'FAIL'
             elif self.command == 'DELETE':
                 try:
-                    query = self.get_query(STUDENTS_ALL_ATTRS)  # type: ignore
+                    query = self.get_query(STUDENTS_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                    msg = 'OK' if db_delete(STUDENTS[1:], query) else 'FAIL'  # type: ignore
+                    if db_delete(STUDENTS[1:], query):
+                        code = OK
+                        msg = 'OK'
+                    else:
+                        code = BAD_REQUEST
+                        msg = 'FAIL'
         elif self.path.startswith(PROFESSORS):
             if self.command == 'POST':
                 try:
-                    body = self.get_body(PROFESSORS_REQ_ATTRS)  # type: ignore
+                    body = self.get_body(PROFESSORS_REQ_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    if db_insert(PROFESSORS[1:], body):  # type: ignore
-                        idd = get_id(PROFESSORS[1:], body)  # type: ignore
+                    if db_insert(PROFESSORS[1:], body):
+                        idd = get_id(PROFESSORS[1:], body)
                         if idd:
                             msg = f'{POST_PROF_RESP_URL}{idd}'
                             code = OK
@@ -423,32 +427,36 @@ class CustomHandler(BaseHTTPRequestHandler):
             elif self.command == 'PUT':
                 try:
                     body = self.get_body({})
-                    query = self.get_body(PROFESSORS_ALL_ATTRS)  # type: ignore
+                    query = self.get_body(PROFESSORS_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
                     code = OK
-                msg = 'OK' if db_update(PROFESSORS[1:], query, body) else 'FAIL'  # type: ignore
+                msg = 'OK' if db_update(PROFESSORS[1:], query, body) else 'FAIL'
             elif self.command == 'DELETE':
                 try:
-                    query = self.get_query(PROFESSORS_ALL_ATTRS)  # type: ignore
+                    query = self.get_query(PROFESSORS_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                    msg = 'OK' if db_delete(PROFESSORS[1:], query) else 'FAIL'  # type: ignore
+                    if db_delete(PROFESSORS[1:], query):
+                        code = OK
+                        msg = 'OK'
+                    else:
+                        code = BAD_REQUEST
+                        msg = 'FAIL'
         elif self.path.startswith(TREES):
             if self.command == 'POST':
                 try:
-                    body = self.get_body(TREES_REQ_ATTRS)  # type: ignore
+                    body = self.get_body(TREES_REQ_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    if db_insert(TREES[1:], body):  # type: ignore
-                        idd = get_id(TREES[1:], body)  # type: ignore
+                    if db_insert(TREES[1:], body):
+                        idd = get_id(TREES[1:], body)
                         print(idd)
                         if idd:
                             msg = f'{POST_TREE_RESP_URL}{idd}'
@@ -462,22 +470,26 @@ class CustomHandler(BaseHTTPRequestHandler):
             elif self.command == 'PUT':
                 try:
                     body = self.get_body({})
-                    query = self.get_body(TREES_ALL_ATTRS)  # type: ignore
+                    query = self.get_body(TREES_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
                     code = OK
-                msg = 'OK' if db_update(TREES[1:], query, body) else 'FAIL'  # type: ignore
+                msg = 'OK' if db_update(TREES[1:], query, body) else 'FAIL'
             elif self.command == 'DELETE':
                 try:
-                    query = self.get_query(TREES_ALL_ATTRS)  # type: ignore
+                    query = self.get_query(TREES_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                    msg = 'OK' if db_delete(TREES[1:], query) else 'FAIL'  # type: ignore
+                    if db_delete(TREES[1:], query):
+                        code = OK
+                        msg = 'OK'
+                    else:
+                        code = BAD_REQUEST
+                        msg = 'FAIL'
         else:
             code = BAD_REQUEST
             msg = "Uknown attribute requested"
