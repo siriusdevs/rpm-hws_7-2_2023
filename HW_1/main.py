@@ -3,7 +3,7 @@
 
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from os import getenv
-from json import loads
+from json import loads as json_loads
 from dotenv import load_dotenv
 from config import *
 from psycopg2 import connect
@@ -94,7 +94,7 @@ def query_request(request: str, query: dict) -> str:
     if query:
         parts = []
         for key, valuee in query.items():
-            if isinstance(valuee, int):
+            if is_int(valuee):
                 parts.append(f"{key}={valuee}")
             else:
                 parts.append(f"{key}='{valuee}'")
@@ -143,9 +143,8 @@ def change_db(request: str) -> bool:
     except Exception as error:
         print(f'change_db error: {error}')
         return False
-    else:
-        db_connection.commit()
-        return bool(db_cursor.rowcount)
+    db_connection.commit()
+    return bool(db_cursor.rowcount)
 
 
 def get_id(table, query: dict):
@@ -226,7 +225,7 @@ def db_update(table: str, query: dict, dataa: dict) -> bool:
     Returns:
         bool - result of db_update
     """
-    dataa = ', '.join([f"{key}={vl}" if is_int(vl) else f"{key}='{vl}'" for key, vl in dataa.items()])  # type:ignore
+    dataa = ', '.join([f"{key}={vl}" if is_int(vl) else f"{key}='{vl}'" for key, vl in dataa.items()])
     return change_db(query_request(UPDATE.format(table=table, data=dataa), query))
 
 
@@ -252,7 +251,7 @@ def is_valid_token(username: str, token: str) -> bool:
 class CustomHandler(BaseHTTPRequestHandler):
     """This is representation of not existing smth."""
 
-    def get_query(self, possible_attrs: dict) -> tuple:
+    def get_query(self, possible_attrs: dict = None) -> tuple:
         """
         Get query request.
 
@@ -329,7 +328,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         code, page = self.get_template()
         self.respond(code, page)
 
-    def get_body(self, required_attrs: dict) -> tuple:
+    def get_body(self, required_attrs: dict = None) -> tuple:
         """
         Get body for server.
 
@@ -345,14 +344,15 @@ class CustomHandler(BaseHTTPRequestHandler):
             msg = f'error while trying to get {HEADER_LENGTH}'
             print(f'{__name__}: {msg}')
             raise Exception(msg)
-        else:
-            body = loads(self.rfile.read(content_length).decode(ENCODING))
+        body = json_loads(self.rfile.read(content_length).decode(ENCODING))
+        # проверим, все ли обязательные атрибуты на месте
+        if required_attrs:
             for attr in required_attrs:
                 if attr not in body:
                     msg = f'required attribute <{attr}> is missing'
                     print(f'{__name__} error: {msg}')
                     raise Exception(msg)
-            return body
+        return body
 
     def make_changes(self):
         """
@@ -384,14 +384,13 @@ class CustomHandler(BaseHTTPRequestHandler):
                         msg = 'FAIL'
             elif self.command == 'PUT':
                 try:
-                    body = self.get_body({})
-                    query = self.get_body(STUDENTS_ALL_ATTRS)
+                    body = self.get_body()
+                    query = self.get_query(STUDENTS_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                msg = 'OK' if db_update(STUDENTS[1:], query, body) else 'FAIL'
+                    code, msg = (OK, 'OK') if db_update(STUDENTS[1:], query, body) else (BAD_REQUEST, 'ERR')
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(STUDENTS_ALL_ATTRS)
@@ -405,6 +404,10 @@ class CustomHandler(BaseHTTPRequestHandler):
                     else:
                         code = BAD_REQUEST
                         msg = 'FAIL'
+            else:
+                code = NOT_IMPLEMENTED
+                msg = 'Not implemented by server, available requests are GET, PUT, DELETE'
+            return code, f'{self.command} {msg}'
         elif self.path.startswith(PROFESSORS):
             if self.command == 'POST':
                 try:
@@ -426,14 +429,13 @@ class CustomHandler(BaseHTTPRequestHandler):
                         msg = 'FAIL'
             elif self.command == 'PUT':
                 try:
-                    body = self.get_body({})
-                    query = self.get_body(PROFESSORS_ALL_ATTRS)
+                    body = self.get_body()
+                    query = self.get_query(PROFESSORS_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                msg = 'OK' if db_update(PROFESSORS[1:], query, body) else 'FAIL'
+                    code, msg = (OK, 'OK') if db_update(PROFESSORS[1:], query, body) else (BAD_REQUEST, 'ERR')
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(PROFESSORS_ALL_ATTRS)
@@ -447,6 +449,10 @@ class CustomHandler(BaseHTTPRequestHandler):
                     else:
                         code = BAD_REQUEST
                         msg = 'FAIL'
+            else:
+                code = NOT_IMPLEMENTED
+                msg = 'Not implemented by server, available requests are GET, PUT, DELETE'
+            return code, f'{self.command} {msg}'
         elif self.path.startswith(TREES):
             if self.command == 'POST':
                 try:
@@ -469,14 +475,13 @@ class CustomHandler(BaseHTTPRequestHandler):
                         msg = 'FAIL'
             elif self.command == 'PUT':
                 try:
-                    body = self.get_body({})
-                    query = self.get_body(TREES_ALL_ATTRS)
+                    body = self.get_body()
+                    query = self.get_query(TREES_ALL_ATTRS)
                 except Exception as error:
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                msg = 'OK' if db_update(TREES[1:], query, body) else 'FAIL'
+                    code, msg = (OK, 'OK') if db_update(TREES[1:], query, body) else (BAD_REQUEST, 'ERR')
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(TREES_ALL_ATTRS)
@@ -490,11 +495,11 @@ class CustomHandler(BaseHTTPRequestHandler):
                     else:
                         code = BAD_REQUEST
                         msg = 'FAIL'
-        else:
-            code = BAD_REQUEST
-            msg = "Uknown attribute requested"
-
-        return code, msg
+            else:
+                code = NOT_IMPLEMENTED
+                msg = 'Not implemented by server, available requests are GET, PUT, DELETE'
+            return code, f'{self.command} {msg}'
+        return NOT_FOUND, 'Content was NOT FOUND'
 
     def respond(self, code: int, msg: str):
         """
