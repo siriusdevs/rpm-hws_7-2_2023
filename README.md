@@ -25,7 +25,7 @@ psql -h 127.0.0.1 -p 32771 -U lina -d animals_db
 ``` 
 password: cat
 
-## Thirdly, you need in .env file
+## Thirdly you need in .env file
 # .env
 POSTGRES_DB=animals_db
 POSTGRES_HOST=127.0.0.1
