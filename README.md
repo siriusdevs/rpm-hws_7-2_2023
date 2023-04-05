@@ -26,13 +26,13 @@ psql -h 127.0.0.1 -p 32771 -U lina -d animals_db
 password: cat
 
 ## Thirdly you need in .env file
-# .env
+### .env
 POSTGRES_DB=animals_db
 POSTGRES_HOST=127.0.0.1
 POSTGRES_PORT=32771 
 POSTGRES_USER=lina
 POSTGRES_PASSWORD=cat
 
-# In the end in project directory:
-# Run server with command:
+## In the end in project directory:
+### Run server with command:
     python3 main.py
