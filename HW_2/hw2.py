@@ -63,9 +63,9 @@ def main():
             else:
                 print('Неправильно. Правильный ответ:', str(question[6]))
 
-        print('Вы ответили правильно на {0} из {1} вопросов'.format(score, currentt + 1))
+        print('Вы ответили правильно на {0} из {1} вопросов'.format(score, currentt))
         if currentt > 0:
-            print('Ваша оценка: {0}%'.format(score / (currentt + 1) * 100))
+            print('Ваша оценка: {0}%'.format(score / (currentt) * 100))
 
 
 if __name__ == '__main__':
