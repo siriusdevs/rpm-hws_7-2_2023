@@ -54,18 +54,20 @@ def main():
                     print('Некорректный ввод. Введите число от 1 до 4 или "exit" для выхода: ')
 
             if isinstance(user_answer, str) and user_answer.lower() == EXIT:
-                print('Вы вышли из викторины!')
+                print('Вы вышли из викторины и ответили правильно на {0} из {1} вопросов'.format(score, currentt))
+                if currentt > 0:
+                    print('Ваша оценка: {0}%'.format(score / (currentt) * 100))
                 break
-
-            if user_answer == question[6]:
-                print('Правильно!')
-                score += 1
             else:
-                print('Неправильно. Правильный ответ:', str(question[6]))
+                if user_answer == question[6]:
+                    print('Правильно!')
+                    score += 1
+                else:
+                    print('Неправильно. Правильный ответ:', str(question[6]))
 
-        print('Вы ответили правильно на {0} из {1} вопросов'.format(score, currentt))
-        if currentt > 0:
-            print('Ваша оценка: {0}%'.format(score / (currentt) * 100))
+                print('Вы ответили правильно на {0} из {1} вопросов'.format(score, currentt + 1))
+                if currentt > 0:
+                    print('Ваша оценка: {0}%'.format(score / (currentt + 1) * 100))
 
 
 if __name__ == '__main__':
