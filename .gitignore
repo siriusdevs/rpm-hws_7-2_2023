@@ -1,2 +1,4 @@
 *branches.sh
 *students*
+*.env*
+*.DS_Store*

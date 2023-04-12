@@ -1,30 +1,40 @@
-"""Это игра-викторина, которая работает с базой данных."""
+"""A quiz game that works with a database."""
+
+from os import getenv
 
 import psycopg2
+from dotenv import load_dotenv
 
-try:
+load_dotenv()
+
+HOST = getenv('HOST')
+DATABASE = getenv('DATABASE')
+DB_USER = getenv('DB_USER')
+PASSWORD = getenv('PASSWORD')
+PORT = getenv('PORT')
+
+
+def datab():
+    """Use this function to connect to the database."""
     conn = psycopg2.connect(
-        host='localhost', port='5444', database='postgres', user='quiz', password='1234',
+        host=HOST, dbname=DATABASE, user=DB_USER, password=PASSWORD, port=PORT,
     )
-except Exception:
-    print('Не удается установить соединение с базой данных')
 
-cursor = conn.cursor()  # Он помогает выполнять SQL-запросы из Python
-cursor.execute('SELECT * FROM quiz')  # Получаем список всех пользователей
-rows = cursor.fetchall()  # Вернуть все строки
+    cursor = conn.cursor()  # Он помогает выполнять SQL-запросы из Python
+    cursor.execute('SELECT * FROM quiz')  # Получаем список всех пользователей
+    quiz(cursor.fetchall())  # Вернуть все строки
 
-cursor.close()  # Закрываем курсор
-conn.close()  # Закрываем соединение
+    cursor.close()  # Закрываем курсор
+    conn.close()  # Закрываем соединение
 
-just_answer = []
-correct = []
-count = 0
-answer = [1, 2, 3]
 
-print('\nВикторина! Как хорошо вы знаете сериал "Острые Козырьки"!')
-start = int(input('Хотите начать? 1 - да 2 - нет: '))
+def quiz(rows):
+    """Quiz.
 
-if start == 1:
+    Args:
+        rows(tuple): all information from the  table
+    """
+    just_answer, correct = [], []
 
     for row in rows:
         print(
@@ -32,7 +42,7 @@ if start == 1:
         )
         while True:
             input_answer = int(input('Введите ответ: '))
-            if input_answer not in answer:
+            if input_answer not in range(1, 4):
                 print('\nТакого варианта ответа нет! Попробуйте еще раз!')
             else:
                 break
@@ -40,17 +50,19 @@ if start == 1:
         just_answer.append(input_answer)
 
     for row_ans in rows:
-        row_ans = int(row_ans[4][:1])
-        correct.append(row_ans)
+        correct.append(int(row_ans[4][:1]))
+
+    count = 0
 
     for indx in range(5):
         if just_answer[indx] == correct[indx]:
             count += 1
 
     if correct == just_answer:
-        print('Все ответы правильные!\nВы хорошо знаете сериал "Острые козырьки"')
+        print('Все ответы правильные!\n')
     else:
-        print('К сожалению, вы плохо знаете сериал!\nПравильных ответов {0}/5'.format(count))
+        print('К сожалению, вы ответили не на все вопросы!🙁😫😩🥺😭😭😭😭😭\nПопробуйте еще раз!')
+        print('Правильных ответов {0}/5'.format(count))
 
-else:
-    print('Очень жаль! 🙁😫😩🥺😭😭😭😭😭')
+
+datab()
