@@ -37,7 +37,7 @@ if start == 1:
             else:
                 break
 
-            just_answer.append(input_answer)
+        just_answer.append(input_answer)
 
     for row_ans in rows:
         row_ans = int(row_ans[4][:1])
