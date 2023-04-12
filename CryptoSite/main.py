@@ -7,7 +7,6 @@ from json import loads
 from views import overview, coins_data, main_page, list_to_paragraphs
 from requests import get
 
-
 load_dotenv()
 
 PG_DBNAME = getenv('PG_DBNAME')
@@ -34,7 +33,7 @@ def query_request(request: str, query: dict):
         parts = []
         for key, instance in query.items():
             if isinstance(instance, int):
-                parts.append(f"{key}={instance}")
+                parts.append(f'{key}={instance}')
             else:
                 parts.append(f"{key}='{instance}'")
         return '{0} WHERE {1}'.format(request, ' AND '.join(parts))
@@ -93,8 +92,10 @@ def db_insert(table: str, message: dict) -> bool:
     keys = list(message.keys())
     instances = [message[key] for key in keys]
     attrs = ', '.join([str(key) for key in keys])
-    values_str = ', '.join([f"{instance}" if isinstance(instance, int)
-                           else f"'{instance}'" for instance in instances])
+    values_str = ', '.join([
+        f'{instance}' if isinstance(instance, int) else f"'{instance}'"
+        for instance in instances
+    ])
     return change_db(INSERT.format(table=table, attrs=attrs, values=values_str))
 
 
@@ -103,8 +104,10 @@ def db_delete(table: str, message: dict):
 
 
 def db_update(table: str, query: dict, message: dict):
-    message = ', '.join([f"{key}={instance}" if is_ins(instance)
-                        else f"{key}='{instance}'" for key, instance in message.items()])
+    message = ', '.join([
+        f'{key}={instance}' if is_ins(instance) else f"{key}='{instance}'"
+        for key, instance in message.items()
+    ])
     return change_db(query_request(UPDATE.format(table=table, data=message), query))
 
 
@@ -142,18 +145,16 @@ class CustomHandler(BaseHTTPRequestHandler):
                 query = self.get_query(COINS_ALL_ATTRS)
             except Exception as error:
                 return BAD_REQUEST, str(error)
-            else:
-                return OK, coins_data(get_data(query, COINS_INFO[1:]))  # название таблицы будет coins
+            return OK, coins_data(get_data(query, COINS_INFO[1:]))
         elif self.path.startswith(MARKET_OVERVIEW):
             try:
                 query = self.get_query()
             except Exception as error:
                 return BAD_REQUEST, str(error)
-            else:
-                return OK, overview(get_overview(query))
+            return OK, overview(get_overview(query))
         return OK, main_page()
 
-    def do_GET(self):
+    def get(self):
         code, page = self.get_template()
         self.respond(code, page)
 
@@ -196,18 +197,18 @@ class CustomHandler(BaseHTTPRequestHandler):
             elif self.command == 'PUT':
                 try:
                     body, query = self.get_body(), self.get_query(COINS_ALL_ATTRS)
-                except Exception as err:
+                except Exception:
                     code = BAD_REQUEST
-                    msg = str(err)
+                    msg = str(Exception)
                 else:
                     code = OK
                     msg = 'OK' if db_update(COINS_INFO[1:], query, body) else 'FAIL'
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(COINS_ALL_ATTRS)
-                except Exception as err:
+                except Exception:
                     code = BAD_REQUEST
-                    msg = str(err)
+                    msg = str(Exception)
                 else:
                     code = OK
                     msg = 'OK' if db_delete(COINS_INFO[1:], query) else 'FAIL'
@@ -239,18 +240,23 @@ class CustomHandler(BaseHTTPRequestHandler):
             code, msg = FORBIDDEN, 'Authorization was failed!'
         self.respond(code, msg)
 
-    def do_POST(self):
+    def post(self):
         self.process()
 
-    def do_DELETE(self):
+    def delete(self):
         self.process()
 
-    def do_PUT(self):
+    def put(self):
         self.process()
 
 
 if __name__ == '__main__':
-    db_connection = connect(dbname=PG_DBNAME, host=PG_HOST, port=PG_PORT, user=PG_USER, password=PG_PASSWORD)
+    db_connection = connect(dbname=PG_DBNAME,
+                            host=PG_HOST,
+                            port=PG_PORT,
+                            user=PG_USER,
+                            password=PG_PASSWORD,
+                            )
     db_cursor = db_connection.cursor()
     with ThreadingHTTPServer((HOST, PORT), CustomHandler) as server:
         server.serve_forever()

@@ -4,11 +4,11 @@ Write the following commands to prepare for the start:
 ```
 git clone https://github.com/blinmakersha/HW_rpm_2_semestr
 
+cd HW_rpm_2_semestr
+
 git checkout kulgavykh
 
-cd rpm-hws_7-2_2023
-
-cd CryproSite
+cd CryptoSite
 ```
 
 Next step is:

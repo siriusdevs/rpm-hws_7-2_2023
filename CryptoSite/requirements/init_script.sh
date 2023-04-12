@@ -15,6 +15,6 @@ sleep 2
 
 # mount all changes
 export PGPASSWORD=123
-psql -h 127.0.0.1 -p 5555 -U app CRYPTO_DB -f requirements/db_init.ddl
+psql -h 127.0.0.1 -p 5555 -U valun CRYPTO_DB -f requirements/db_init.ddl
 
 python3 requirements/setup_env.py
