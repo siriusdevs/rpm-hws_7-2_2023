@@ -153,7 +153,7 @@ class CustomHandler(BaseHTTPRequestHandler):
             return OK, overview(get_overview(query))
         return OK, main_page()
 
-    def get(self):
+    def do_GET(self):
         code, page = self.get_template()
         self.respond(code, page)
 
@@ -175,15 +175,19 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     def make_changes(self):
         if self.path.startswith(COINS_INFO):
+            print(0)
             if self.command == 'POST':
                 try:
+                    print(1)
                     body = self.get_body(COINS_REQ_ATTRS)
                 except Exception as error:
+                    print(2)
                     code, msg = BAD_REQUEST, str(error)
                 else:
+                    print(3)
                     if db_insert(COINS_INFO[1:], body):
-                        id_user = get_id(COINS_INFO[1:], body)
-                        code, msg = OK, f'{POST_RESPONSE_URL}{id_user}' if id_user else INTERNAL_ERR, 'id not found'
+                        rec_id = get_id(COINS_INFO[1:], body)
+                        code, msg = (OK, f'{POST_RESPONSE_URL}{rec_id}') if rec_id else (INTERNAL_ERR, 'id not found')
                     else:
                         code = BAD_REQUEST
                         msg = 'FAIL'
@@ -191,11 +195,9 @@ class CustomHandler(BaseHTTPRequestHandler):
                 try:
                     body, query = self.get_body(), self.get_query(COINS_ALL_ATTRS)
                 except Exception as err:
-                    code = BAD_REQUEST
-                    msg = str(err)
+                    code, msg = BAD_REQUEST, str(err)
                 else:
-                    code = OK
-                    msg = 'OK' if db_update(COINS_INFO[1:], query, body) else 'FAIL'
+                    code, msg = (OK, 'OK') if db_update(COINS_INFO[1:], query, body) else (BAD_REQUEST, 'ERROR')
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(COINS_ALL_ATTRS)
@@ -241,9 +243,6 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         self.process()
-        
-    def do_GET(self):
-        self.get()
 
 
 if __name__ == '__main__':
