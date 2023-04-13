@@ -19,7 +19,7 @@ BINANCE_KEY = getenv('BINANCE_KEY')
 
 def get_data(query: dict, table: str) -> dict:
     global db_cursor
-    db_cursor.execute(query_request(SELECT.format(table=table), query))
+    db_cursor.execute(build_query(SELECT.format(table=table), query))
     coins = db_cursor.fetchall()
     table_data = [[str(elem) for elem in record] for record in coins]
     return {
@@ -28,19 +28,19 @@ def get_data(query: dict, table: str) -> dict:
     }
 
 
-def is_ins(instance: any):
-    return isinstance(instance, int)
+def is_integer(num: any):
+    return isinstance(num, int)
 
 
-def query_request(request: str, query: dict):
+def build_query(request: str, query: dict) -> str:
     if query:
-        parts = []
+        conditions = []
         for key, instance in query.items():
-            if is_ins(instance):
-                parts.append(f'{key}={instance}')
+            if is_integer(instance):
+                conditions.append(f'{key}={instance}')
             else:
-                parts.append(f"{key}='{instance}'")
-        return '{0} WHERE {1}'.format(request, ' AND '.join(parts))
+                conditions.append(f"{key}='{instance}'")
+        return '{0} WHERE {1}'.format(request, ' AND '.join(conditions))
     return request
 
 
@@ -78,9 +78,8 @@ def change_db(request: str):
 
 
 def get_id(table: str, query: dict):
-    global db_cursor, db_connection
     try:
-        db_cursor.execute(query_request(SELECT_ID.format(table=table), query))
+        db_cursor.execute(build_query(SELECT_ID.format(table=table), query))
     except Exception as error:
         print(f'change_db error: {error}')
         return 0
@@ -92,22 +91,22 @@ def db_insert(table: str, data: dict) -> bool:
     values = [data[key] for key in keys]
     attrs = ', '.join([str(key) for key in keys])
     values_str = ', '.join([
-        f'{value}' if is_ins(value) else f"'{value}'"
+        f'{value}' if is_integer(value) else f"'{value}'"
         for value in values
     ])
     return change_db(INSERT.format(table=table, attrs=attrs, values=values_str))
 
 
 def db_delete(table: str, data: dict):
-    return change_db(query_request(DELETE.format(table=table), data))
+    return change_db(build_query(DELETE.format(table=table), data))
 
 
 def db_update(table: str, query: dict, data: dict):
     data = ', '.join([
-        f'{key}={val}' if is_ins(val) else f"{key}='{val}'"
+        f'{key}={val}' if is_integer(val) else f"{key}='{val}'"
         for key, val in data.items()
     ])
-    return change_db(query_request(UPDATE.format(table=table, data=data), query))
+    return change_db(build_query(UPDATE.format(table=table, data=data), query))
 
 
 def is_valid_token(username: str, token: str) -> bool:
