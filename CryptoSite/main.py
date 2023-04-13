@@ -28,11 +28,15 @@ def get_data(query: dict, table: str) -> dict:
     }
 
 
+def is_ins(instance: any):
+    return isinstance(instance, int)
+
+
 def query_request(request: str, query: dict):
     if query:
         parts = []
         for key, instance in query.items():
-            if isinstance(instance, int):
+            if is_ins(instance):
                 parts.append(f'{key}={instance}')
             else:
                 parts.append(f"{key}='{instance}'")
@@ -64,7 +68,6 @@ def get_overview(query: dict) -> dict:
 
 
 def change_db(request: str):
-    global db_cursor, db_connection
     try:
         db_cursor.execute(request)
     except Exception as error:
@@ -84,35 +87,30 @@ def get_id(table: str, query: dict):
     return db_cursor.fetchone()[0]
 
 
-def is_ins(instance: any):
-    return isinstance(instance, int)
-
-
-def db_insert(table: str, message: dict) -> bool:
-    keys = list(message.keys())
-    instances = [message[key] for key in keys]
+def db_insert(table: str, data: dict) -> bool:
+    keys = list(data.keys())
+    values = [data[key] for key in keys]
     attrs = ', '.join([str(key) for key in keys])
     values_str = ', '.join([
-        f'{instance}' if isinstance(instance, int) else f"'{instance}'"
-        for instance in instances
+        f'{value}' if is_ins(value) else f"'{value}'"
+        for value in values
     ])
     return change_db(INSERT.format(table=table, attrs=attrs, values=values_str))
 
 
-def db_delete(table: str, message: dict):
-    return change_db(query_request(DELETE.format(table=table), message))
+def db_delete(table: str, data: dict):
+    return change_db(query_request(DELETE.format(table=table), data))
 
 
-def db_update(table: str, query: dict, message: dict):
-    message = ', '.join([
-        f'{key}={instance}' if is_ins(instance) else f"{key}='{instance}'"
-        for key, instance in message.items()
+def db_update(table: str, query: dict, data: dict):
+    data = ', '.join([
+        f'{key}={val}' if is_ins(val) else f"{key}='{val}'"
+        for key, val in data.items()
     ])
-    return change_db(query_request(UPDATE.format(table=table, data=message), query))
+    return change_db(query_request(UPDATE.format(table=table, data=data), query))
 
 
 def is_valid_token(username: str, token: str) -> bool:
-    global db_cursor
     db_cursor.execute(GET_TOKEN.format(username=username))
     answer = db_cursor.fetchone()
     if answer:
@@ -122,10 +120,11 @@ def is_valid_token(username: str, token: str) -> bool:
 
 class CustomHandler(BaseHTTPRequestHandler):
 
-    def get_query(self, good_attrs: dict = {}) -> tuple:
+    def get_query(self, good_attrs: dict = None) -> tuple:
+        print(1)
         res = {}
         index = self.path.find('?')
-        if index != -1 and index != len(self.path) - 1:
+        if index not in (len(self.path) - 1, -1):
             query_parts = self.path[index + 1:].split('&')
             query = [part.split('=') for part in query_parts]
             for key, instance in query:
@@ -158,7 +157,7 @@ class CustomHandler(BaseHTTPRequestHandler):
         code, page = self.get_template()
         self.respond(code, page)
 
-    def get_body(self, required_attrs: dict = {}) -> tuple:
+    def get_body(self, required_attrs: dict = None) -> tuple:
         try:
             content_length = int(self.headers[HEADER_LENGTH])
         except ValueError:
@@ -166,12 +165,12 @@ class CustomHandler(BaseHTTPRequestHandler):
             print(f'{__name__}: {msg}')
             raise Exception(msg)
         body = loads(self.rfile.read(content_length).decode(ENCODING))
-        # проверим, все ли обязательные атрибуты на месте
-        for attr in required_attrs:
-            if attr not in body:
-                msg = f'required attribute <{attr}> is missing'
-                print(f'{__name__} error: {msg}')
-                raise Exception(msg)
+        if required_attrs:
+            for attr in required_attrs:
+                if attr not in body:
+                    msg = f'required attribute <{attr}> is missing'
+                    print(f'{__name__} error: {msg}')
+                    raise Exception(msg)
         return body
 
     def make_changes(self):
@@ -180,35 +179,29 @@ class CustomHandler(BaseHTTPRequestHandler):
                 try:
                     body = self.get_body(COINS_REQ_ATTRS)
                 except Exception as error:
-                    code = BAD_REQUEST
-                    msg = str(error)
+                    code, msg = BAD_REQUEST, str(error)
                 else:
                     if db_insert(COINS_INFO[1:], body):
                         id_user = get_id(COINS_INFO[1:], body)
-                        if id_user:
-                            msg = f'{POST_RESPONSE_URL}{id_user}'
-                            code = OK
-                        else:
-                            code = INTERNAL_ERROR
-                            msg = 'id not found after post'
+                        code, msg = OK, f'{POST_RESPONSE_URL}{id_user}' if id_user else INTERNAL_ERR, 'id not found'
                     else:
                         code = BAD_REQUEST
                         msg = 'FAIL'
             elif self.command == 'PUT':
                 try:
                     body, query = self.get_body(), self.get_query(COINS_ALL_ATTRS)
-                except Exception:
+                except Exception as err:
                     code = BAD_REQUEST
-                    msg = str(Exception)
+                    msg = str(err)
                 else:
                     code = OK
                     msg = 'OK' if db_update(COINS_INFO[1:], query, body) else 'FAIL'
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(COINS_ALL_ATTRS)
-                except Exception:
+                except Exception as err:
                     code = BAD_REQUEST
-                    msg = str(Exception)
+                    msg = str(err)
                 else:
                     code = OK
                     msg = 'OK' if db_delete(COINS_INFO[1:], query) else 'FAIL'
@@ -221,7 +214,7 @@ class CustomHandler(BaseHTTPRequestHandler):
 
     def respond(self, code: int, msg: str):
         self.send_response(code)
-        self.send_header(HEADER_TYPE, 'text/html')
+        self.send_header(HEADER_TYPE, 'text')
         self.end_headers()
         self.wfile.write(msg.encode(ENCODING))
 
@@ -240,14 +233,17 @@ class CustomHandler(BaseHTTPRequestHandler):
             code, msg = FORBIDDEN, 'Authorization was failed!'
         self.respond(code, msg)
 
-    def post(self):
+    def do_POST(self):
         self.process()
 
-    def delete(self):
+    def do_DELETE(self):
         self.process()
 
-    def put(self):
+    def do_PUT(self):
         self.process()
+        
+    def do_GET(self):
+        self.get()
 
 
 if __name__ == '__main__':
