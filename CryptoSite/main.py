@@ -120,7 +120,6 @@ def is_valid_token(username: str, token: str) -> bool:
 class CustomHandler(BaseHTTPRequestHandler):
 
     def get_query(self, good_attrs: dict = None) -> tuple:
-        print(1)
         res = {}
         index = self.path.find('?')
         if index not in (len(self.path) - 1, -1):
@@ -177,13 +176,10 @@ class CustomHandler(BaseHTTPRequestHandler):
             print(0)
             if self.command == 'POST':
                 try:
-                    print(1)
                     body = self.get_body(COINS_REQ_ATTRS)
                 except Exception as error:
-                    print(2)
                     code, msg = BAD_REQUEST, str(error)
                 else:
-                    print(3)
                     if db_insert(COINS_INFO[1:], body):
                         rec_id = get_id(COINS_INFO[1:], body)
                         code, msg = (OK, f'{POST_RESPONSE_URL}{rec_id}') if rec_id else (INTERNAL_ERR, 'id not found')
@@ -193,16 +189,16 @@ class CustomHandler(BaseHTTPRequestHandler):
             elif self.command == 'PUT':
                 try:
                     body, query = self.get_body(), self.get_query(COINS_ALL_ATTRS)
-                except Exception as err:
-                    code, msg = BAD_REQUEST, str(err)
+                except Exception as error:
+                    code, msg = BAD_REQUEST, str(error)
                 else:
                     code, msg = (OK, 'OK') if db_update(COINS_INFO[1:], query, body) else (BAD_REQUEST, 'ERROR')
             elif self.command == 'DELETE':
                 try:
                     query = self.get_query(COINS_ALL_ATTRS)
-                except Exception as err:
+                except Exception as error:
                     code = BAD_REQUEST
-                    msg = str(err)
+                    msg = str(error)
                 else:
                     code = OK
                     msg = 'OK' if db_delete(COINS_INFO[1:], query) else 'FAIL'
