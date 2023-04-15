@@ -1,5 +1,5 @@
 HOST = '127.0.0.1'
-PORT = 8004
+PORT = 8003
 
 # TEMPLATES
 MAIN_TEMPLATE = 'index.html'
