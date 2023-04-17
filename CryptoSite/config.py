@@ -2,9 +2,9 @@ HOST = '127.0.0.1'
 PORT = 8003
 
 # TEMPLATES
-MAIN_TEMPLATE = 'cryptosite/templates/index.html'
-COINS_TEMPLATE = 'cryptosite/templates/coins.html'
-MARKET_OVERVIEW_TEMPLATE = 'cryptosite/templates/market-overview.html'
+MAIN_TEMPLATE = 'СryptoSite/templates/index.html'
+COINS_TEMPLATE = 'СryptoSite/templates/coins.html'
+MARKET_OVERVIEW_TEMPLATE = 'СryptoSite/templates/market-overview.html'
 
 # PAGES
 MARKET_OVERVIEW = '/overview'
