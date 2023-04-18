@@ -52,7 +52,7 @@ python3 main.py
 ---
 #### After this command you fill see the main page. You can choose which page to go to. 
 ---
-### If you chooce the page with name "cities", you will see a different cities and some infromation about them, like country, local language and population. 
+### If you chooce the page with name "cities", you will see different cities and some infromation about them, like country, local language and population. 
 
 #### You can open Postman and try to do POST/PUT/DELETE requests. Folows this steps:
 
@@ -68,7 +68,7 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
     "country": "some country",   
 }
 ```
-##### It is necessary filds to do POST request. If you want, you can  past full request with language and population. Example:
+##### It is necessary to fill filds to do POST request. If you want, you can  past full request with language and population. Example:
 ```
 {
     "city": "some city", 
@@ -82,7 +82,7 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
  
  ##### 2. To do PUT you should:
 * paste the url http://127.0.0.1:8001/cities?id=
-after "=" you must to pate city id, witch you want to update.
+after "=" you must to paste city id, witch you want to update.
 * in fields "Headers" you should paste:
 in field key paste: "Authorization"
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
@@ -95,14 +95,14 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
     "population": 1000   
 }
 ```
-In this filds you should write a changes, witch you want to do.
-##### After this command you will see a updated city.
+In this filds you should write changes, that you want to do.
+##### After this command you will see an updated city.
 
 ##### 3. To do DELETE you should:
 * paste the url http://127.0.0.1:8001/cities?id=
-after "=" you must to pate city id, witch you want to update.
+after "=" you must to paste city id, witch you want to update.
 * in fields "Headers" you should paste:
 in field key paste: "Authorization"
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 ---
-### If you chooce the page with name "hotels", you can find a hotels in 3 cities (Irkutsk, Moscow and Sochi).
+### If you chooce the page with name "hotels", you can find hotels in 3 cities (Irkutsk, Moscow and Sochi).
