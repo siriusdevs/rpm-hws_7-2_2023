@@ -59,7 +59,7 @@ python3 main.py
 ##### 1. To do POST you should:
 * paste the url http://127.0.0.1:8001/cities
 * in fields "Headers" you should paste:
-in field key paste: "Authorization"
+in field key paste: "Authorization",
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 * in fields "Body" you must choose a raw(JSON) and paste json like that:
 ```
@@ -84,7 +84,7 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 * paste the url http://127.0.0.1:8001/cities?id=
 after "=" you must to paste city id, witch you want to update.
 * in fields "Headers" you should paste:
-in field key paste: "Authorization"
+in field key paste: "Authorization",
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 * in fields "Body" you must choose a raw(JSON) and paste json like that:
 ```
@@ -102,7 +102,7 @@ In this filds you should write changes, that you want to do.
 * paste the url http://127.0.0.1:8001/cities?id=
 after "=" you must to paste city id, witch you want to update.
 * in fields "Headers" you should paste:
-in field key paste: "Authorization"
+in field key paste: "Authorization",
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 ---
 ### If you choose the page with name "hotels", you can find hotels in 3 cities (Irkutsk, Moscow and Sochi).
