@@ -1,0 +1,46 @@
+<html lang="en">
+    <head>
+        <title>
+            Cities
+        </title>
+    </head>
+    <body>
+        <br>
+        <form action="/cities" name="cities_form" id="cities_form">
+            <label for="city">City:</label><br>
+            <input type="text" id="city" name="city">
+            <br><br>
+            <label for="country">Country:</label><br>
+            <input type="text" id="country" name="country">
+            <br><br>
+            <label for="language">Language:</label><br>
+            <input type="text" id="language" name="language">
+            <br><br>
+            <input type="submit">
+        </form>
+        <script>
+            var form = document.getElementById("cities_form")
+            form.addEventListener('submit', function () {{
+                var all_inputs = form.getElementsByTagName('input');
+                for (var i=0; i<all_inputs.length; i++) {{
+                    var input = all_inputs[i];
+                    if (input.name && !input.value) {{
+                        input.name = '';
+                    }}
+                }}
+            }});
+        </script>
+        <h3>
+            Cities:
+        </h3>
+        <h4>
+            Cities count: {number}
+        </h4>
+        <h4> Full cities list: </h4>
+            {rendered_cities}
+        <br>
+        <a href="/hotels">Hotels</a>
+        <br>
+        <a href="/">Back to main</a>
+    </body>
+</html>
