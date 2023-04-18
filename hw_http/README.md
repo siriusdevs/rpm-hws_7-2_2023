@@ -105,4 +105,4 @@ after "=" you must to paste city id, witch you want to update.
 in field key paste: "Authorization"
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 ---
-### If you chooce the page with name "hotels", you can find hotels in 3 cities (Irkutsk, Moscow and Sochi).
+### If you choose the page with name "hotels", you can find hotels in 3 cities (Irkutsk, Moscow and Sochi).
