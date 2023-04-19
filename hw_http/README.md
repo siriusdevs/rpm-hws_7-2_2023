@@ -52,7 +52,7 @@ python3 main.py
 ---
 #### After this command you fill see the main page. You can choose which page to go to. 
 ---
-### If you chooce the page with name "cities", you will see different cities and some infromation about them, like country, local language and population. 
+### If you choose the page with name "cities", you will see different cities and some infromation about them, like country, local language and population. 
 
 #### You can open Postman and try to do POST/PUT/DELETE requests. Folows this steps:
 
