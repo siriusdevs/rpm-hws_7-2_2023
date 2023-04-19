@@ -1,11 +1,14 @@
-from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
-from psycopg2 import connect
-from dotenv import load_dotenv
 from os import getenv
-from config import *
-from json import loads
-from views import hotels, cities, main_page, list_to_paragraphs
+
+from dotenv import load_dotenv
+from psycopg2 import connect
 from requests import get
+
+from config import *
+from views import hotels, cities, main_page, list_to_paragraphs
+from json import loads
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+
 load_dotenv()
 
 PG_DBNAME = getenv('PG_DBNAME')
@@ -196,8 +199,8 @@ class CustomHandler(BaseHTTPRequestHandler):
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code = OK
-                    msg = 'OK' if db_delete(CITIES[1:], query) else 'FAIL'
+                    code, msg = (OK, 'OK') if db_delete(CITIES[1:], query) else (NOT_FOUND, "FAIL")
+
             else:
                 code = NOT_IMPLEMENTED
                 msg = 'Not implemented by server, available requests are GET, PUT, DELETE'

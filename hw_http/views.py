@@ -1,4 +1,4 @@
-from config import HOTELS_TEMPLATE, CITIES_TEMPLATE, MAIN_TEMPLATE
+from config import CITIES_TEMPLATE, HOTELS_TEMPLATE, MAIN_TEMPLATE
 
 
 def list_to_paragraphs(data: list):
