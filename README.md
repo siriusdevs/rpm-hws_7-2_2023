@@ -1,4 +1,4 @@
-# This is http_server with long awaited (for me) cats and animals.
+# This is http_server with cats and animals.
 ## Firstly, you should execute commands:
 ```bash
     git clone https://github.com/siriusdevs/rpm-hws_7-2_2023
