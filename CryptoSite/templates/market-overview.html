@@ -1,0 +1,34 @@
+<html lang="en">
+    <head>
+        <title>
+            Market Overview
+        </title>
+    </head>
+    <body>
+        <h3>
+            Choose tho couple of coins:
+        </h3>
+        <form id="overview_form" action="/overview">
+            <select id="overview" name="symbol" form="overview_form">
+                <option value="ETHBTC">ETHBTC</option>
+                <option value="BTCUSDT">BTCUSDT</option>
+                <option value="BUSDUSDT">BUSDUSDT</option>
+                <option value="ARBUSDT">ARBUSDT</option>
+                <option value="MATICUSDT">MATICUSDT</option>
+            </select>
+            <br><br>
+            <input type="submit">
+        </form>Preview
+        <h2>
+            Market Overview
+        </h2>
+        <h3>
+            Token: {symbol}
+        </h3>
+        <h3>
+            Current price: {current price}
+        </h3>
+        <br><br>
+        <a href="/">Back to main</a>
+    </body>
+</html>
