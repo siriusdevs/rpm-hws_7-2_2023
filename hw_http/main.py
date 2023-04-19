@@ -39,7 +39,7 @@ def query_request(request: str, query: dict):
         parts = []
         for key, value in query.items():
             if is_int(value):
-                parts.append(f"{key}={value}")
+                parts.append(f'{key}={value}')
             else:
                 parts.append(f"{key}='{value}'")
         return '{0} WHERE {1}'.format(request, ' AND '.join(parts))
@@ -94,7 +94,7 @@ def db_insert(table: str, data: dict) -> bool:
     keys = list(data.keys())
     values = [data[key] for key in keys]
     attrs = ', '.join([str(key) for key in keys])
-    values_str = ', '.join([f"{value}" if is_int(value) else f"'{value}'" for value in values])
+    values_str = ', '.join([f'{value}' if is_int(value) else f"'{value}'" for value in values])
     return change_db(INSERT.format(table=table, attrs=attrs, values=values_str))
 
 
@@ -103,7 +103,7 @@ def db_delete(table: str, data: dict):
 
 
 def db_update(table: str, query: dict, data: dict):
-    data = ', '.join([f"{key}={val}" if is_int(val) else f"{key}='{val}'" for key, val in data.items()])
+    data = ', '.join([f'{key}={val}' if is_int(val) else f"{key}='{val}'" for key, val in data.items()])
     return change_db(query_request(UPDATE.format(table=table, data=data), query))
 
 
@@ -199,7 +199,7 @@ class CustomHandler(BaseHTTPRequestHandler):
                     code = BAD_REQUEST
                     msg = str(error)
                 else:
-                    code, msg = (OK, 'OK') if db_delete(CITIES[1:], query) else (NOT_FOUND, "FAIL")
+                    code, msg = (OK, 'OK') if db_delete(CITIES[1:], query) else (NOT_FOUND, 'FAIL')
 
             else:
                 code = NOT_IMPLEMENTED
