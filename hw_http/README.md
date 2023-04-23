@@ -58,17 +58,17 @@ python3 main.py
 
 ##### 1. To do POST you should:
 * paste the url http://127.0.0.1:8001/cities
-* in fields "Headers" you should paste:
+* in field "Headers" you should paste:
 in field key paste: "Authorization",
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
-* in fields "Body" you must choose a raw(JSON) and paste json like that:
+* in field "Body" you must choose a raw(JSON) and paste json like that:
 ```
 {
     "city": "some city", 
-    "country": "some country",   
+    "country": "some country"
 }
 ```
-##### It is necessary to fill filds to do POST request. If you want, you can  past full request with language and population. Example:
+##### It is necessary to fill field to do POST request. If you want, you can  past full request with language and population. Example:
 ```
 {
     "city": "some city", 
@@ -83,10 +83,10 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
  ##### 2. To do PUT you should:
 * paste the url http://127.0.0.1:8001/cities?id=
 after "=" you must to paste city id, witch you want to update.
-* in fields "Headers" you should paste:
+* in field "Headers" you should paste:
 in field key paste: "Authorization",
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
-* in fields "Body" you must choose a raw(JSON) and paste json like that:
+* in field "Body" you must choose a raw(JSON) and paste json like that:
 ```
 {
     "city": "some city", 
@@ -95,13 +95,13 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
     "population": 1000   
 }
 ```
-In this filds you should write changes, that you want to do.
+In this field you should write changes, that you want to do.
 ##### After this command you will see an updated city.
 
 ##### 3. To do DELETE you should:
 * paste the url http://127.0.0.1:8001/cities?id=
 after "=" you must to paste city id, witch you want to update.
-* in fields "Headers" you should paste:
+* in field "Headers" you should paste:
 in field key paste: "Authorization",
 in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 ---

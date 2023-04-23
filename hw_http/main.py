@@ -87,7 +87,7 @@ def get_id(table: str, query: dict):
     except Exception as error:
         print(f'db get_id error: {error}')
         return 0
-    return db_cursor.fetchone()[0]
+    return db_cursor.fetchall()[-1][0]
 
 
 def db_insert(table: str, data: dict) -> bool:
