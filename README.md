@@ -1,7 +1,7 @@
 # This is http_server with cats and animals.
 ## Firstly, you should execute commands:
 ```bash
-    git clone https://github.com/siriusdevs/rpm-hws_7-2_2023
+    git clone https://github.com/Linapush/rpm-hws_7-2_2023
 
     git checkout puskareva
 
