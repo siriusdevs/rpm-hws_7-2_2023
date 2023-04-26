@@ -1,0 +1,33 @@
+<html lang="en">
+    <head>
+        <title>
+            Hotels
+        </title>
+    </head>
+    <body>
+        <br><br>
+        <h3>
+            Choose location where you want find hotels:
+        </h3>
+        <br>
+        <form id="hotels_form" action="/hotels">
+            <select id="hotels" name="location" form="hotels_form">
+                <option value="irkutsk">Irkutsk</option>
+                <option value="sochi">Sochi</option>
+                <option value="moscow">Moscow</option>
+            </select>
+            <br><br>
+            <input type="submit">
+        </form>
+        <h2>
+            Hotels
+        </h2>
+        <h3>
+            hotel's name: {0}
+        </h3>
+        <br>
+        <a href="/cities">Cities</a>
+        <br>
+        <a href="/">Back to main</a>
+    </body>
+</html>
