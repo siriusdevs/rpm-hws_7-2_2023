@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="KOI8-R">
+    <title>
+        Animals
+    </title>
+</head>
+
+<body>
+    <a href="">&#128584;</a>
+    <a href="">&#128576;</a>
+    <a href="">&#128574;</a>
+    <a href="">&#128570;</a>
+    <a href="">&#128585;</a>
+    <a href="">&#128568;</a>    
+    <a href="">&#128572;</a>
+    <a href="">&#128575;</a>
+    <a href="">&#128586;</a>
+    <br>
+    <form action="/animals" name="animals_form" id="animals_form">
+        <label for="kind">Kind:</label><br>
+        <input type="text" id="kind" name="kind">
+        <br><br>
+        <label for="areal">Areal:</label><br>
+        <input type="text" id="areal" name="areal">
+        <br><br>
+        <label for="fact">Fact:</label><br>
+        <input type="text" id="fact" name="fact">
+        <br><br>
+        <input type="submit">
+    </form>
+    <h3>
+        Animals:
+    </h3>
+    <h4>
+        Animals count: {number}
+    </h4>
+    <h4> Full animals list: </h4>
+    {rendered_animals}
+    <h5> Return to fill list <a href="/animals">Animals</a>:</h5>
+    <br>
+    <a href="/cats">Cats</a>
+    <br>
+    <a href="/">Back to main</a>
+</body>
+
+</html>
