@@ -1,0 +1,48 @@
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+        Animals
+    </title>
+</head>
+
+<body>
+    <br>
+    <form action="/animals" name="animals_form" id="animals_form">
+        <label for="id">ID:</label><br>
+        <input type="text" id="id_" name="id_">
+        <br><br>
+        <label for="kind ">Kind:</label><br>
+        <input type="text" id="kind" name="kind">
+        <br><br>
+        <label for="areal">Areal:</label><br>
+        <input type="text" id="areal" name="areal">
+        <br><br>
+        <label for="fact">Fact:</label><br>
+        <input type="text" id="fact" name="fact">
+        <br><br>
+        <input type="submit" name="Добавить">
+
+        {rendered_animals}
+    </form>
+
+    <script>
+        var form = document.getElementById("animals_form")
+        form.addEventListener('submit', function () {{
+                var all_inputs = form.getElementsByTagName('input');
+                for (var i=0; i<all_inputs.length; i++) {{
+                    var input = all_inputs[i];
+                    if (input.name && !input.value) {{
+                        input.name = '';
+                    }}
+                }}
+            }});
+    </script>
+    <br>
+    <a href="/cats">Cats</a>
+    <br>
+    <a href="/">Back to main</a>
+</body>
+
+</html>
