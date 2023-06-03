@@ -9,7 +9,7 @@
 git clone https://github.com/Linapush/homework_http_fork.git
 ```
 ```
-cd http_animal_server
+cd homework_http_fork
 ```
 ```
 git checkout pushkareva
@@ -17,7 +17,7 @@ git checkout pushkareva
 ### 2. You need to move folder with name homework_http_fork.
 
 ```
-cd homework_http_fork
+cd http_animal_server
 ```
 
 ### 3. You need to create a docker container. Follow this few steps.
