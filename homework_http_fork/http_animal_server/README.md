@@ -6,10 +6,10 @@
 ### 1. Do this command to clone my repo
 
 ```
-git clone https://github.com/alinapushkareva/rpm-hws_7-2_2023
+git clone https://github.com/Linapush/homework_http_fork.git
 ```
 ```
-cd rpm-hws_7-2_2023
+cd http_animal_server
 ```
 ```
 git checkout pushkareva
@@ -56,10 +56,10 @@ python3 main.py
 #### You can open Postman and try to do POST/PUT/DELETE requests. Folows this steps:
 
 ##### 1. To do POST you should:
-* paste the url http://127.0.0.1:8002/animals
+* paste the url http://127.0.0.1:8001/animals
 * in field "Headers" you should paste:
 in field key paste: "Authorization",
-in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
+in field value paste: "admin {fe705453-aec1-408b-af94-556910ca0651}"
 * in field "Body" you must choose a raw(JSON) and paste json like that:
 ```
 {
@@ -79,11 +79,11 @@ in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
 ##### After this command you will see a url with city id. You can press ctrl and click to the link. You will see your city.
 
  ##### 2. To do PUT you should:
-* paste the url http://127.0.0.1:8002/animals?id=
+* paste the url http://127.0.0.1:8001/animals?id=
 after "=" you must to paste aninal id, witch you want to update.
 * in field "Headers" you should paste:
 in field key paste: "Authorization",
-in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
+in field value paste: "admin {fe705453-aec1-408b-af94-556910ca0651}"
 * in field "Body" you must choose a raw(JSON) and paste json like that:
 ```
 {
@@ -97,10 +97,10 @@ In this field you should write changes, that you want to do.
 ##### After this command you will see an updated city.
 
 ##### 3. To do DELETE you should:
-* paste the url http://127.0.0.1:8002/animals?id=
+* paste the url http://127.0.0.1:8001/animals?id=
 after "=" you must to paste animal id, witch you want to update.
 * in field "Headers" you should paste:
 in field key paste: "Authorization",
-in field value paste: "admin {537dc091-cbeb-4802-84f8-46f0ea57694c}"
+in field value paste: "admin {fe705453-aec1-408b-af94-556910ca0651}"
 ---
-### If you choose the page with name "hotels", you can find hotels in 3 cities (Irkutsk, Moscow and Sochi).
+### If you choose the page with name "cats", you can different cute cats from cataas.com.
