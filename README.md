@@ -1,1 +1,2 @@
-Используйте линтеры в своих домашних заданиях. Успехов!
+To see the project visit homework_http_fork and then http_animal_server
+Then follow the instructions in README file
