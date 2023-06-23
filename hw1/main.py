@@ -9,7 +9,7 @@ credentials = {
     'port': int(getenv('PG_PORT')),
     'user': getenv('PG_USER'),
     'password': getenv('PG_PASSWORD'),
-    'dbname': getenv('PG_DBNAME')
+    'dbname': getenv('PG_DBNAME'),
 }
 
 connection = connect(**credentials, cursor_factory=RealDictCursor)
@@ -22,16 +22,16 @@ if len(data) <= 10:
     new_len = len(data)
 print('Викторина на тему: Россия')
 print("Для выхода нажмите 'q'")
-rans, i = 0, 0
-while i < new_len:
-    row = data[i]
-    id = row['id']
+rans, chislo = 0, 0
+while chislo < new_len:
+    row = data[chislo]
+    aidi = row['id']
     question = row['question']
     answer_1 = row['answer_1']
     answer_2 = row['answer_2']
     answer_3 = row['answer_3']
     right_answer = int(row['right_answer'])
-    print('\n'.join((f'Вопрос № {id}',
+    print('\n'.join((f'Вопрос № {aidi}',
                         f'{question}',
                         'Варианты ответа: ',
                         f'{answer_1}',
@@ -51,7 +51,7 @@ while i < new_len:
         rans += 1
     else:
         print(f'Неверно! Правильный ответ: {right_answer}\n')
-    i += 1
+    chislo += 1
 print(f'Ваш результат: {rans} из {new_len}')
 
 cursor.close()
